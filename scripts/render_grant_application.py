@@ -29,7 +29,7 @@ def main() -> None:
     per_var = m["model_per_variable_rmse"]
     persistence = m["persistence_per_variable_rmse"]
 
-    text = f"""# Ensue World Model Grant Application\n\n"
+    text = "# Ensue World Model Grant Application\n\n"
     text += f"**Name:** {args.name}\n\n"
     text += f"**Affiliation:** {args.affiliation}\n\n"
     text += "**GitHub:** https://github.com/futureiscustom/baja__weather_model_eval\n\n"
