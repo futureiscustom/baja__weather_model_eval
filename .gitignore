@@ -5,4 +5,4 @@ __pycache__/
 .pytest_cache/
 data/*.npz
 artifacts/*.pt
-results/*.json
+results/synthetic_metrics.json
