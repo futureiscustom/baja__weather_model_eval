@@ -4,7 +4,7 @@
 
 ## Applicant
 
-Name: Uriel Cordero
+Name: [YOUR NAME]
 
 Affiliation: Future Is Custom
 
