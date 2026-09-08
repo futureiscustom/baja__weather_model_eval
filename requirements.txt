@@ -1,7 +1,8 @@
 numpy>=1.26,<3
- torch>=2.2
- xarray>=2024.11.0
- zarr>=2.18
- gcsfs>=2024.6
- fsspec>=2024.6
- pytest>=8.0
+torch>=2.2
+xarray>=2024.11.0
+zarr>=2.18,<3
+numcodecs<0.16.0
+gcsfs>=2024.6
+fsspec>=2024.6
+pytest>=8.0
