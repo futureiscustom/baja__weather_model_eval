@@ -1,0 +1,45 @@
+name: full-benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/full-benchmark.yml'
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install 'numpy>=1.26,<3' 'xarray>=2024.11.0' 'zarr>=2.18,<3' 'numcodecs<0.16.0' 'gcsfs>=2024.6' 'fsspec>=2024.6'
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Prepare 2018-2020 ERA5 Baja benchmark
+        run: |
+          python scripts/prepare_era5_baja.py \
+            --start 2018-01-01 \
+            --end 2020-12-31T18:00:00
+      - name: Train baseline
+        run: python scripts/train_era5.py --epochs 20 --hidden 48 --seed 7
+      - name: Evaluate frozen checkpoint
+        run: python scripts/eval_era5.py --checkpoint artifacts/era5_tinyweathernet.pt
+      - name: Render grant application draft
+        run: |
+          python scripts/render_grant_application.py \
+            --project-url 'https://futureiscustom.github.io/baja__weather_model_eval/'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: baja-weather-grant-benchmark
+          path: |
+            results/era5_metrics.json
+            results/era5_eval_only.json
+            results/ENSUE_APPLICATION_READY.md
+            artifacts/era5_tinyweathernet.pt
+          if-no-files-found: error
+          retention-days: 30
