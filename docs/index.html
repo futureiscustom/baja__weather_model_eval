@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Baja Weather Model Eval: a compact regional world-model benchmark for Baja California Sur using ERA5 and WeatherBench 2.">
+  <title>Baja Weather Model Eval — Future Is Custom</title>
+  <style>
+    :root{color-scheme:light dark;--bg:#0b0d10;--card:#12161b;--text:#edf2f7;--muted:#9ba7b4;--line:#29313a;--accent:#84d4ff;--max:900px}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    main{max-width:var(--max);margin:auto;padding:72px 24px 96px} a{color:var(--accent)}
+    .eyebrow{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    h1{font-size:clamp(42px,7vw,76px);line-height:1.02;letter-spacing:-.04em;margin:14px 0 20px;max-width:850px}
+    h2{font-size:30px;letter-spacing:-.02em;margin-top:64px} h3{font-size:20px;margin-top:28px}
+    .lede{font-size:22px;color:#c7d1db;max-width:760px}.question{font-size:28px;line-height:1.35;border-left:3px solid var(--accent);padding-left:22px;margin:44px 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:28px 0}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}.card strong{display:block;margin-bottom:4px}.card span{color:var(--muted)}
+    code{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:2px 6px} ul{padding-left:22px}.note{color:var(--muted);font-size:14px;border-top:1px solid var(--line);margin-top:70px;padding-top:22px}
+    .status{display:inline-block;border:1px solid var(--line);background:var(--card);padding:7px 11px;border-radius:999px;color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Future Is Custom · Open research experiment</div>
+  <h1>Baja Weather Model Eval</h1>
+  <p class="lede">A compact world-model experiment for forecasting the future atmospheric state over Baja California Sur and its surrounding Pacific and Gulf context.</p>
+  <p><span class="status">Early research baseline</span></p>
+
+  <p class="question"><strong>How much useful forecasting ability can we extract from a compact model that is inexpensive to train, easy to inspect, and straightforward to benchmark?</strong></p>
+
+  <h2>The experiment</h2>
+  <p>The model receives several recent atmospheric states and predicts a future atmospheric state. The first real-data benchmark uses public ERA5 data distributed through WeatherBench 2.</p>
+  <div class="grid">
+    <div class="card"><strong>2m temperature</strong><span>Surface thermal state</span></div>
+    <div class="card"><strong>10m U wind</strong><span>East-west wind component</span></div>
+    <div class="card"><strong>10m V wind</strong><span>North-south wind component</span></div>
+    <div class="card"><strong>Sea-level pressure</strong><span>Regional pressure field</span></div>
+  </div>
+  <p>The initial task uses four recent six-hourly states as context and predicts conditions <strong>24 hours after the latest observation</strong>.</p>
+
+  <h2>A scoreboard instead of intuition</h2>
+  <p>Every model is tested against atmospheric conditions it did not see during training. Forecast error is measured with root mean squared error (RMSE), and the learned model is compared with a persistence baseline: assume the future will look exactly like the latest observation.</p>
+  <p>That turns every experiment into a concrete question: <strong>did this change actually make the held-out forecast better?</strong></p>
+  <p>The evaluation also reports per-variable errors in physical units, model parameter count, and percentage improvement or regression versus persistence.</p>
+
+  <h2>The first model</h2>
+  <p><code>TinyWeatherNet</code> is intentionally small. It stacks recent weather maps as channels, passes them through a few convolutional layers, and predicts a correction to the latest observed state.</p>
+  <p>This is not an attempt to replace operational forecasting or compete directly with systems such as GraphCast, Pangu-Weather or NeuralGCM. A compact baseline has a different advantage: architecture, context, variables, losses and training strategies can be changed quickly and measured against the same fixed eval.</p>
+
+  <h2>Why Baja?</h2>
+  <p>Baja California Sur is a compact but interesting regional system. The peninsula sits between the Pacific Ocean and Gulf of California, with desert terrain, mountain ranges, coastal microclimates and periodic tropical systems interacting over relatively short distances.</p>
+  <p>The benchmark includes surrounding ocean rather than cropping tightly to political boundaries because useful atmospheric context does not stop at a state line.</p>
+
+  <h2>Reproducible by design</h2>
+  <ul>
+    <li>Chronological train/test split.</li>
+    <li>Normalization statistics computed from training data only.</li>
+    <li>Persistence and learned models scored on identical held-out targets.</li>
+    <li>Prepared ERA5 benchmark data SHA-256 hashed.</li>
+    <li>Standalone evaluation command independent from training.</li>
+    <li>Machine-readable JSON results.</li>
+  </ul>
+
+  <h2>Next experiments</h2>
+  <div class="grid">
+    <div class="card"><strong>Architecture</strong><span>Residual CNNs, U-Net, ConvLSTM</span></div>
+    <div class="card"><strong>Time</strong><span>6h, 12h, 24h, 48h horizons</span></div>
+    <div class="card"><strong>Inputs</strong><span>Longer history and upper-air variables</span></div>
+    <div class="card"><strong>Efficiency</strong><span>Skill per parameter and inference cost</span></div>
+  </div>
+
+  <h2>Results policy</h2>
+  <p>Real benchmark numbers will be published only after running the held-out ERA5 evaluation. Synthetic development data are used solely to verify and teach the experimental pipeline and are not presented as scientific evidence.</p>
+
+  <h2>Repository</h2>
+  <p>The code, data-preparation path, benchmark definition, training script and fixed evaluation are available in the <a href="https://github.com/futureiscustom/baja__weather_model_eval">project repository</a>.</p>
+
+  <p class="note">Built by Future Is Custom. Weather data are sourced from public ERA5 datasets distributed through WeatherBench 2. This is an experimental research project, not an operational weather service.</p>
+</main>
+</body>
+</html>
