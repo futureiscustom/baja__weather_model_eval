@@ -1,0 +1,41 @@
+{
+  "dataset": "WeatherBench 2 ERA5 Baja crop",
+  "data_sha256": "18e0243d584a91b2162aace3abe4c745335dfe6960d81b3791118bb1a3c8bd6e",
+  "variables": [
+    "2m_temperature",
+    "10m_u_component_of_wind",
+    "10m_v_component_of_wind",
+    "mean_sea_level_pressure"
+  ],
+  "units": {
+    "2m_temperature": "K",
+    "10m_u_component_of_wind": "m s^-1",
+    "10m_v_component_of_wind": "m s^-1",
+    "mean_sea_level_pressure": "Pa"
+  },
+  "input_steps": 4,
+  "lead_steps": 4,
+  "lead_hours": 24,
+  "train_fraction": 0.8,
+  "train_samples": 3500,
+  "test_samples": 870,
+  "seed": 7,
+  "epochs": 20,
+  "parameters": 29476,
+  "final_train_mse": 0.2084783765588488,
+  "persistence_normalized_rmse": 0.6146983977527848,
+  "model_normalized_rmse": 0.4785261191571768,
+  "improvement_percent": 22.152697826027655,
+  "model_per_variable_rmse": {
+    "2m_temperature": 1.1977509490374454,
+    "10m_u_component_of_wind": 1.5291413731506873,
+    "10m_v_component_of_wind": 1.5727486707587761,
+    "mean_sea_level_pressure": 163.69735494963618
+  },
+  "persistence_per_variable_rmse": {
+    "2m_temperature": 1.3587221265703915,
+    "10m_u_component_of_wind": 1.9429884440725027,
+    "10m_v_component_of_wind": 2.1672618903121665,
+    "mean_sea_level_pressure": 201.33301046727527
+  }
+}
